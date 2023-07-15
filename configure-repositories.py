@@ -49,7 +49,7 @@ def configure(repo):
 def setup_local_mysql_database(repo):
     mirror_dev_tool(repo, "mysql")
 
-    delete_recursively(os.path.join(repo, "docker-entrypoint-initdb.d"))
+    remove_legacy_files(repo, ["mysql", "docker-entrypoint-initdb.d"])
 
 
 def mirror_dev_tool(repo, dev_tool):
@@ -57,6 +57,11 @@ def mirror_dev_tool(repo, dev_tool):
     target_path = os.path.join(repo, "dev-tools", dev_tool)
 
     mirror_directories(source_path, target_path)
+
+
+def remove_legacy_files(repo, files):
+    for file in files:
+        delete_recursively(os.path.join(repo, file))
 
 
 def configuration_repo():
