@@ -17,11 +17,7 @@ def main():
 
 
 def help():
-    print_error("Usage: ./configure-repositories.py <path1> [<path2>...]")
-
-
-def print_error(message):
-    print(message, file=sys.stderr)
+    print("Usage: ./configure-repositories.py <path1> [<path2>...]", file=sys.stderr)
 
 
 def error(message):
