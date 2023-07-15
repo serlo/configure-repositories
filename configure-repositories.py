@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import json
 import logging
 import os
 import sys
@@ -24,6 +25,22 @@ def main():
 def configure(repo):
     if not os.path.isdir(repo):
         error(f"path {repo} is no directory")
+
+    package_json_file = os.path.join(repo, "package.json")
+
+    try:
+        settings = read_json_file(package_json_file)["settings"]
+    except FileNotFoundError:
+        error(f"{package_json_file} does not exist")
+    except json.decoder.JSONDecodeError:
+        error(f"{package_json_file} is no json file")
+    except KeyError:
+        error(f"{package_json_file} does not have key 'settings'")
+
+
+def read_json_file(json_file):
+    with open(json_file, "r") as fd:
+        return json.load(fd)
 
 
 def help():
