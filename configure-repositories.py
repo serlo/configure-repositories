@@ -29,13 +29,17 @@ def configure(repo):
     package_json_file = os.path.join(repo, "package.json")
 
     try:
-        settings = read_json_file(package_json_file)["settings"]
+        package_json = read_json_file(package_json_file)
     except FileNotFoundError:
         error(f"{package_json_file} does not exist")
     except json.decoder.JSONDecodeError:
         error(f"{package_json_file} is no json file")
-    except KeyError:
-        error(f"{package_json_file} does not have key 'settings'")
+
+    settings = package_json.get("settings", None)
+
+    if settings == None:
+        logging.warn(f"{package_json_file} does not have a key 'settings'")
+        return
 
 
 def read_json_file(json_file):
