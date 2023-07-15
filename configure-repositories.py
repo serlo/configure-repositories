@@ -3,6 +3,7 @@
 import json
 import logging
 import os
+import shutil
 import sys
 
 
@@ -41,6 +42,21 @@ def configure(repo):
         logging.warn(f"{package_json_file} does not have a key 'settings'")
         return
 
+    if settings.get("localMysqlDatabase", False):
+        setup_local_mysql_database(repo)
+
+
+def setup_local_mysql_database(repo):
+    delete_recursively(os.path.join(repo, "docker-entrypoint-initdb.d"))
+
+
+def delete_recursively(path):
+    try:
+        shutil.rmtree(path)
+    except FileNotFoundError:
+        pass
+    except Exception as e:
+        error(f"Error occurred while deleting: {path}\n{e}")
 
 def read_json_file(json_file):
     with open(json_file, "r") as fd:
