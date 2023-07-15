@@ -58,6 +58,7 @@ def delete_recursively(path):
     except Exception as e:
         error(f"Error occurred while deleting: {path}\n{e}")
 
+
 def read_json_file(json_file):
     with open(json_file, "r") as fd:
         return json.load(fd)
