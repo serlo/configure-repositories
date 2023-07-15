@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import logging
+import os
 import sys
 
 
@@ -14,6 +15,15 @@ def main():
 
     if any(help_opt in args for help_opt in ["--help", "-h", "-?"]):
         help()
+        sys.exit(0)
+
+    for repo in args:
+        configure(repo)
+
+
+def configure(repo):
+    if not os.path.isdir(repo):
+        error(f"path {repo} is no directory")
 
 
 def help():
