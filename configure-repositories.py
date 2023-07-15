@@ -47,21 +47,19 @@ def configure(repo):
 
 
 def setup_local_mysql_database(repo):
-    mirror_from_files(repo, "mysql")
+    mirror_dev_tool(repo, "mysql")
 
     delete_recursively(os.path.join(repo, "docker-entrypoint-initdb.d"))
 
 
-def mirror_from_files(repo, file_in_files):
-    files_directory = os.path.join(get_root_of_configuration_repo(), "files")
-
-    source_path = os.path.join(files_directory, file_in_files)
-    target_path = os.path.join(repo, file_in_files)
+def mirror_dev_tool(repo, dev_tool):
+    source_path = os.path.join(configuration_repo(), "dev-tools", dev_tool)
+    target_path = os.path.join(repo, "dev-tools", dev_tool)
 
     mirror_directories(source_path, target_path)
 
 
-def get_root_of_configuration_repo():
+def configuration_repo():
     return os.path.dirname(os.path.abspath(__file__))
 
 
