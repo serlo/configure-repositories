@@ -59,7 +59,7 @@ def setup_local_mysql_database(repo):
                       build:
                         context: mysql/docker-container
                         dockerfile: Dockerfile
-                      plattform: linux/x86_64
+                      platform: linux/x86_64
                       ports:
                         - '3306:3306'
                 """
