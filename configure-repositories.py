@@ -28,15 +28,8 @@ def main():
 
 
 def configure(repo, args):
-    if not os.path.isdir(repo):
-        error(f"path {repo} is no directory")
-
-    package_json_file = os.path.join(repo, "package.json")
-    if not os.path.isfile(package_json_file):
-        logging.warn(
-            f"{package_json_file} does not exist – maybe no serlo repository?!"
-        )
-        return
+    if not os.path.isdir(os.path.join(repo, ".git")):
+        error(f"path {repo} is no git repository")
 
     if args.setup_local_mysql:
         setup_local_mysql_database(repo)
