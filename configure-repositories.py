@@ -5,6 +5,7 @@ import logging
 import os
 import shutil
 import sys
+import textwrap
 
 
 def main():
@@ -49,6 +50,33 @@ def configure(repo):
 def setup_local_mysql_database(repo):
     mirror_file(repo, "mysql")
 
+    update_file(
+        os.path.join(repo, "docker-compose.yml"),
+        block_in_file(
+            block=textwrap.dedent(
+                """
+                    mysql:
+                      build:
+                        context: mysql/docker-container
+                        dockerfile: Dockerfile
+                      plattform: linux/x86_64
+                      ports:
+                        - '3306:3306'
+                """
+            ),
+            start_marker="# START: MySQL service",
+            end_marker="# END: MySQL service",
+            indent_prefix="  ",
+        ),
+        default_content=textwrap.dedent(
+            """
+                version: 3.9
+
+                service:
+            """
+        ),
+    )
+
     remove_legacy_files(repo, ["docker-entrypoint-initdb.d"])
 
 
@@ -68,6 +96,38 @@ def configuration_repo():
     return os.path.dirname(os.path.abspath(__file__))
 
 
+def block_in_file(block, start_marker, end_marker, indent_prefix=""):
+    def update_file_content(content):
+        start_index = content.find(start_marker)
+        end_index = content.find(end_marker)
+
+        new_content = (
+            "\n" + indent_prefix + start_marker if start_index < 0 else start_marker
+        )
+        new_content += textwrap.indent(block, indent_prefix)
+        new_content += "\n" if not block.endswith("\n") else ""
+        new_content += indent_prefix + end_marker + "\n"
+
+        start_index = len(content) if start_index < 0 else start_index
+        end_index = len(content) if end_index < 0 else end_index + len(end_marker) + 1
+
+        return content[0:start_index] + new_content + content[end_index:]
+
+    return update_file_content
+
+
+def update_file(file_path, update_func, default_content=None):
+    content = read_file(file_path)
+    content = default_content if content == None else content
+
+    if content == None:
+        return
+
+    new_content = update_func(content)
+
+    write_to_file(file_path, new_content)
+
+
 def mirror_directories(source_path, target_path):
     if os.path.exists(target_path):
         shutil.rmtree(target_path)
@@ -81,6 +141,24 @@ def delete_recursively(path):
         pass
     except Exception as e:
         error(f"Error occurred while deleting: {path}\n{e}")
+
+
+def read_file(file_path):
+    try:
+        with open(file_path, "r") as file:
+            return file.read()
+    except FileNotFoundError:
+        return None
+    except Exception as e:
+        error(f"Error occurred while reading the file: {file_path}\n{e}")
+
+
+def write_to_file(file_path, content):
+    try:
+        with open(file_path, "w") as file:
+            file.write(content)
+    except Exception as e:
+        error(f"Error occurred while writing to file: {file_path}\n{e}")
 
 
 def read_json_file(json_file):
