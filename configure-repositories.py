@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import argparse
 import json
 import logging
 import os
@@ -11,16 +12,15 @@ import textwrap
 def main():
     logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 
-    args = sys.argv[1:]
+    parser = argparse.ArgumentParser(
+        "configure.py", description="Configures repositories of the Serlo organisation"
+    )
 
-    if len(args) == 0:
-        error("No arguments specified!")
+    parser.add_argument("repo_path", nargs="+")
 
-    if any(help_opt in args for help_opt in ["--help", "-h", "-?"]):
-        help()
-        sys.exit(0)
+    args = parser.parse_args()
 
-    for repo in args:
+    for repo in args.repo_path:
         configure(repo)
 
 
@@ -216,10 +216,6 @@ def write_to_file(file_path, content):
 def read_json_file(json_file):
     with open(json_file, "r") as fd:
         return json.load(fd)
-
-
-def help():
-    print("Usage: ./configure-repositories.py <path1> [<path2>...]", file=sys.stderr)
 
 
 def error(message):
