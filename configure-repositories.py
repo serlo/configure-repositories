@@ -80,19 +80,17 @@ def setup_local_mysql_database(repo):
     def update(package_json):
         package_json.setdefault("scripts", {})
 
-        package_json["scripts"]["start:docker"] = "docker compose up --detach"
-        package_json["scripts"]["stop:docker"] = "docker compose down"
-
-        package_json["scripts"]["mysql"] = "docker compose exec mysql serlo-mysql"
-        package_json["scripts"][
-            "mysql:dump"
-        ] = "ts-node --experimental-specifier-resolution=node scripts/mysql-dump"
-        package_json["scripts"][
-            "mysql:rollback"
-        ] = "ts-node --experimental-specifier-resolution=node scripts/mysql-rollback"
-        package_json["scripts"][
-            "mysql:import-anonymous-data"
-        ] = "ts-node --experimental-specifier-resolution=node scripts/mysql-import-anonymous-data"
+        ts_node_cmd = "ts-node --experimental-specifier-resolution=node"
+        package_json["scripts"].update(
+            {
+                "start:docker": "docker compose up --detach",
+                "stop:docker": "docker compose down",
+                "mysql": "docker compose exec mysql serlo-mysql",
+                "mysql:dump": f"{ts_node_cmd} mysql/scripts/mysql-dump",
+                "mysql:rollback": f"{ts_node_cmd} mysql/scripts/mysql-rollback",
+                "mysql:import-anonymous-data": f"{ts_node_cmd} mysql/scripts/mysql-import-anonymous-data",
+            }
+        )
 
         return package_json
 
