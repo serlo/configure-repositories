@@ -19,6 +19,11 @@ def main():
     parser.add_argument(
         "--setup-local-mysql", action="store_true", help="set up a local MySQL database"
     )
+    parser.add_argument(
+        "--sort-yarn-scripts",
+        action="store_true",
+        help="Sort yarn scripts alphabetically",
+    )
     parser.add_argument("repo_path", nargs="+")
 
     args = parser.parse_args()
@@ -34,10 +39,11 @@ def configure(repo, args):
     if args.setup_local_mysql:
         setup_local_mysql_database(repo)
 
-    format_files(repo)
+    if args.sort_yarn_scripts:
+        sort_yarn_scripts(repo)
 
 
-def format_files(repo):
+def sort_yarn_scripts(repo):
     def format_package_json(package_json):
         if "scripts" not in package_json:
             return package_json
