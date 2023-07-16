@@ -21,6 +21,11 @@ def main():
         "--setup-local-mysql", action="store_true", help="set up a local MySQL database"
     )
     parser.add_argument(
+        "--setup-github-actions",
+        action="store_true",
+        help="Add default github actions for setting up Node.js and yarn",
+    )
+    parser.add_argument(
         "--sort-yarn-scripts",
         action="store_true",
         help="Sort yarn scripts alphabetically",
@@ -42,6 +47,9 @@ def configure(repo, args):
 
     if args.sort_yarn_scripts:
         sort_yarn_scripts(repo)
+
+    if args.setup_github_actions:
+        mirror_file(repo, os.path.join(".github", "actions"))
 
 
 def sort_yarn_scripts(repo):
