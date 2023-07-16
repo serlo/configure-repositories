@@ -77,7 +77,21 @@ def setup_local_mysql_database(repo):
         ),
     )
 
+    def update(package_json):
+        package_json.setdefault("scripts", {})
+
+        package_json["scripts"]["start:docker"] = "docker compose up --detach"
+        package_json["scripts"]["stop:docker"] = "docker compose down"
+
+        return package_json
+
+    update_package_json(repo, update)
+
     remove_legacy_files(repo, ["docker-entrypoint-initdb.d"])
+
+
+def update_package_json(repo, update_func):
+    update_file(os.path.join(repo, "package.json"), update_json(update_func))
 
 
 def mirror_file(repo, file):
@@ -94,6 +108,15 @@ def remove_legacy_files(repo, files):
 
 def configuration_repo():
     return os.path.dirname(os.path.abspath(__file__))
+
+
+def update_json(update_func):
+    def update_file_content(content):
+        current_json = json.loads(content)
+        new_json = update_func(current_json)
+        return json.dumps(new_json, sort_keys=False, indent=2)
+
+    return update_file_content
 
 
 def block_in_file(block, start_marker, end_marker, indent_prefix=""):
