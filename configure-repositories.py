@@ -13,7 +13,8 @@ def main():
     logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 
     parser = argparse.ArgumentParser(
-        "configure.py", description="Configures repositories of the Serlo organisation"
+        os.path.basename(__file__),
+        description="Configures repositories of the Serlo organisation",
     )
 
     parser.add_argument(
