@@ -16,34 +16,29 @@ def main():
         "configure.py", description="Configures repositories of the Serlo organisation"
     )
 
+    parser.add_argument(
+        "--setup-local-mysql", action="store_true", help="set up a local MySQL database"
+    )
     parser.add_argument("repo_path", nargs="+")
 
     args = parser.parse_args()
 
     for repo in args.repo_path:
-        configure(repo)
+        configure(repo, args)
 
 
-def configure(repo):
+def configure(repo, args):
     if not os.path.isdir(repo):
         error(f"path {repo} is no directory")
 
     package_json_file = os.path.join(repo, "package.json")
-
-    try:
-        package_json = read_json_file(package_json_file)
-    except FileNotFoundError:
-        error(f"{package_json_file} does not exist")
-    except json.decoder.JSONDecodeError:
-        error(f"{package_json_file} is no json file")
-
-    settings = package_json.get("settings", None)
-
-    if settings == None:
-        logging.warn(f"{package_json_file} does not have a key 'settings'")
+    if not os.path.isfile(package_json_file):
+        logging.warn(
+            f"{package_json_file} does not exist – maybe no serlo repository?!"
+        )
         return
 
-    if settings.get("localMysqlDatabase", False):
+    if args.setup_local_mysql:
         setup_local_mysql_database(repo)
 
     format_files(repo)
@@ -211,11 +206,6 @@ def write_to_file(file_path, content):
             file.write(content)
     except Exception as e:
         error(f"Error occurred while writing to file: {file_path}\n{e}")
-
-
-def read_json_file(json_file):
-    with open(json_file, "r") as fd:
-        return json.load(fd)
 
 
 def error(message):
