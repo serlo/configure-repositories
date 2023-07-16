@@ -46,6 +46,20 @@ def configure(repo):
     if settings.get("localMysqlDatabase", False):
         setup_local_mysql_database(repo)
 
+    format_files(repo)
+
+
+def format_files(repo):
+    def format_package_json(package_json):
+        if "scripts" not in package_json:
+            return package_json
+
+        package_json["scripts"] = dict(sorted(package_json["scripts"].items()))
+
+        return package_json
+
+    update_package_json(repo, format_package_json)
+
 
 def setup_local_mysql_database(repo):
     mirror_file(repo, "mysql")
@@ -91,6 +105,12 @@ def setup_local_mysql_database(repo):
                 "mysql:import-anonymous-data": f"{ts_node_cmd} mysql/scripts/mysql-import-anonymous-data",
             }
         )
+
+        if "start" not in package_json["scripts"]:
+            package_json["scripts"]["start"] = "yarn start:docker"
+
+        if "stop" not in package_json["scripts"]:
+            package_json["scripts"]["stop"] = "yarn stop:docker"
 
         return package_json
 
