@@ -130,8 +130,10 @@ def configuration_repo():
 def update_json(update_func):
     def update_file_content(content):
         current_json = json.loads(content)
+
         new_json = update_func(current_json)
-        return json.dumps(new_json, sort_keys=False, indent=2)
+
+        return json.dumps(new_json, sort_keys=False, indent=2) + "\n"
 
     return update_file_content
 
