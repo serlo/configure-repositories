@@ -22,6 +22,7 @@ const repositoryBaseDir = path.dirname(__dirname)
 const sqlInitFile = path.join(
   repositoryBaseDir,
   'mysql',
+  'docker-container',
   'docker-entrypoint-initdb.d',
   '001-init.sql'
 )
