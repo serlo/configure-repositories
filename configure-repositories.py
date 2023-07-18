@@ -17,13 +17,6 @@ def get_rules():
             "action": setup_local_mysql_database,
         },
         {
-            "flag": "--add-setup-node-action",
-            "help": "Add github action for setting up Node.JS and yarn",
-            "action": lambda repo: mirror_file(
-                repo, os.path.join(".github", "actions")
-            ),
-        },
-        {
             "flag": "--sort-yarn-scripts",
             "help": "Sort yarn scripts alphabetically",
             "action": sort_yarn_scripts,
@@ -79,7 +72,6 @@ def sort_yarn_scripts(repo):
 
 def setup_local_mysql_database(repo):
     mirror_file(repo, os.path.join("scripts", "mysql"))
-    mirror_file(repo, os.path.join(".github", "actions", "setup-mysql"))
 
     update_file(
         os.path.join(repo, "docker-compose.yml"),
