@@ -65,7 +65,7 @@ def sort_yarn_scripts(repo):
 
 
 def setup_local_mysql_database(repo):
-    mirror_file(repo, "mysql")
+    mirror_file(repo, "scripts/mysql")
 
     update_file(
         os.path.join(repo, "docker-compose.yml"),
@@ -73,9 +73,7 @@ def setup_local_mysql_database(repo):
             block=textwrap.dedent(
                 """
                     mysql:
-                      build:
-                        context: mysql/docker-container
-                        dockerfile: Dockerfile
+                      image: eu.gcr.io/serlo-shared/serlo-mysql-database:latest
                       platform: linux/x86_64
                       ports:
                         - '3306:3306'
@@ -87,9 +85,9 @@ def setup_local_mysql_database(repo):
         ),
         default_content=textwrap.dedent(
             """
-                version: 3.9
+                version: '3.9'
 
-                service:
+                services:
             """
         ),
     )
