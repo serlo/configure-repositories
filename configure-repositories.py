@@ -78,7 +78,8 @@ def sort_yarn_scripts(repo):
 
 
 def setup_local_mysql_database(repo):
-    mirror_file(repo, "scripts/mysql")
+    mirror_file(repo, os.path.join("scripts", "mysql"))
+    mirror_file(repo, os.path.join(".github", "actions", "setup-mysql"))
 
     update_file(
         os.path.join(repo, "docker-compose.yml"),
@@ -112,13 +113,14 @@ def setup_local_mysql_database(repo):
         package_json["scripts"].update(
             {
                 "mysql": "docker compose exec mysql serlo-mysql",
-                "mysql:dump": f"{ts_node_cmd} mysql/scripts/mysql-dump",
                 "mysql:import-anonymous-data": f"{ts_node_cmd} mysql/scripts/mysql-import-anonymous-data",
                 "mysql:rollback": f'docker compose exec mysql sh -c "pv /docker-entrypoint-initdb.d/001-init.sql | serlo-mysql"',
                 "start:docker": "docker compose up --detach",
                 "stop:docker": "docker compose down",
             }
         )
+
+        package_json["scripts"].pop("mysql:dump", None)
 
         if "start" not in package_json["scripts"]:
             package_json["scripts"]["start"] = "yarn start:docker"
@@ -134,7 +136,8 @@ def setup_local_mysql_database(repo):
         repo,
         [
             "docker-entrypoint-initdb.d",
-            os.path.join("scripts", "mysql", "mysql-rollback.ts"),
+            os.path.join("scripts", "mysql", "mysql-dump.ts"),
+            os.path.join("scripts", "mysql", "transform"),
         ],
     )
 
