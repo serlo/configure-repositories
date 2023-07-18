@@ -79,6 +79,7 @@ def sort_yarn_scripts(repo):
 
 def setup_local_mysql_database(repo):
     mirror_file(repo, "scripts/mysql")
+    mirror_file(repo, os.path.join(".github", "actions", "setup-mysql"))
 
     update_file(
         os.path.join(repo, "docker-compose.yml"),
