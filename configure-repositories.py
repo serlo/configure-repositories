@@ -16,8 +16,8 @@ def get_rules():
             "action": setup_local_mysql_database
         },
         {
-            "flag": "--setup-github-actions",
-            "help": "Add default github actions for setting up Node.js and yarn",
+            "flag": "--add-setup-node-action",
+            "help": "Add github action for setting up Node.JS and yarn",
             "action": lambda repo: mirror_file(repo, os.path.join(".github", "actions"))
         },
         {
@@ -53,6 +53,12 @@ def configure(repo, args):
     for rule in get_rules():
         if args[rule["flag"][2:].replace("-", "_")]:
             rule["action"](repo)
+
+
+def add_setup_node_action(repo):
+    mirror_file(repo, os.path.join(".github", "actions", "setup-node"))
+
+    remove_legacy_files(repo, [os.path.join(".github", "actions", "setup")])
 
 
 def sort_yarn_scripts(repo):
