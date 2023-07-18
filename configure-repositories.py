@@ -8,24 +8,28 @@ import shutil
 import sys
 import textwrap
 
+
 def get_rules():
     return [
         {
             "flag": "--setup-local-mysql",
             "help": "set up a local MySQL database",
-            "action": setup_local_mysql_database
+            "action": setup_local_mysql_database,
         },
         {
             "flag": "--add-setup-node-action",
             "help": "Add github action for setting up Node.JS and yarn",
-            "action": lambda repo: mirror_file(repo, os.path.join(".github", "actions"))
+            "action": lambda repo: mirror_file(
+                repo, os.path.join(".github", "actions")
+            ),
         },
         {
             "flag": "--sort-yarn-scripts",
             "help": "Sort yarn scripts alphabetically",
-            "action": sort_yarn_scripts
+            "action": sort_yarn_scripts,
         },
     ]
+
 
 def main():
     logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
