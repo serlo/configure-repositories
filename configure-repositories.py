@@ -8,24 +8,28 @@ import shutil
 import sys
 import textwrap
 
+
 def get_rules():
     return [
         {
             "flag": "--setup-local-mysql",
             "help": "set up a local MySQL database",
-            "action": setup_local_mysql_database
+            "action": setup_local_mysql_database,
         },
         {
-            "flag": "--setup-github-actions",
-            "help": "Add default github actions for setting up Node.js and yarn",
-            "action": lambda repo: mirror_file(repo, os.path.join(".github", "actions"))
+            "flag": "--add-setup-node-action",
+            "help": "Add github action for setting up Node.JS and yarn",
+            "action": lambda repo: mirror_file(
+                repo, os.path.join(".github", "actions")
+            ),
         },
         {
             "flag": "--sort-yarn-scripts",
             "help": "Sort yarn scripts alphabetically",
-            "action": sort_yarn_scripts
+            "action": sort_yarn_scripts,
         },
     ]
+
 
 def main():
     logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
@@ -53,6 +57,12 @@ def configure(repo, args):
     for rule in get_rules():
         if args[rule["flag"][2:].replace("-", "_")]:
             rule["action"](repo)
+
+
+def add_setup_node_action(repo):
+    mirror_file(repo, os.path.join(".github", "actions", "setup-node"))
+
+    remove_legacy_files(repo, [os.path.join(".github", "actions", "setup")])
 
 
 def sort_yarn_scripts(repo):
