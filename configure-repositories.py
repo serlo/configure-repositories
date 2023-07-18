@@ -114,7 +114,7 @@ def setup_local_mysql_database(repo):
                 "mysql": "docker compose exec mysql serlo-mysql",
                 "mysql:dump": f"{ts_node_cmd} mysql/scripts/mysql-dump",
                 "mysql:import-anonymous-data": f"{ts_node_cmd} mysql/scripts/mysql-import-anonymous-data",
-                "mysql:rollback": f"{ts_node_cmd} mysql/scripts/mysql-rollback",
+                "mysql:rollback": f'docker compose exec mysql sh -c "pv /docker-entrypoint-initdb.d/001-init.sql | serlo-mysql"',
                 "start:docker": "docker compose up --detach",
                 "stop:docker": "docker compose down",
             }
@@ -130,7 +130,13 @@ def setup_local_mysql_database(repo):
 
     update_package_json(repo, update)
 
-    remove_legacy_files(repo, ["docker-entrypoint-initdb.d"])
+    remove_legacy_files(
+        repo,
+        [
+            "docker-entrypoint-initdb.d",
+            os.path.join("scripts", "mysql", "mysql-rollback.ts"),
+        ],
+    )
 
 
 def update_package_json(repo, update_func):
