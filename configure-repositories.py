@@ -8,6 +8,24 @@ import shutil
 import sys
 import textwrap
 
+def get_rules():
+    return [
+        {
+            "flag": "--setup-local-mysql",
+            "help": "set up a local MySQL database",
+            "action": setup_local_mysql_database
+        },
+        {
+            "flag": "--setup-github-actions",
+            "help": "Add default github actions for setting up Node.js and yarn",
+            "action": lambda repo: mirror_file(repo, os.path.join(".github", "actions"))
+        },
+        {
+            "flag": "--sort-yarn-scripts",
+            "help": "Sort yarn scripts alphabetically",
+            "action": sort_yarn_scripts
+        },
+    ]
 
 def main():
     logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
@@ -17,24 +35,14 @@ def main():
         description="Configures repositories of the Serlo organisation",
     )
 
-    parser.add_argument(
-        "--setup-local-mysql", action="store_true", help="set up a local MySQL database"
-    )
-    parser.add_argument(
-        "--setup-github-actions",
-        action="store_true",
-        help="Add default github actions for setting up Node.js and yarn",
-    )
-    parser.add_argument(
-        "--sort-yarn-scripts",
-        action="store_true",
-        help="Sort yarn scripts alphabetically",
-    )
+    for rule in get_rules():
+        parser.add_argument(rule["flag"], action="store_true", help=rule["help"])
+
     parser.add_argument("repo_path", nargs="+")
 
-    args = parser.parse_args()
+    args = vars(parser.parse_args())
 
-    for repo in args.repo_path:
+    for repo in args["repo_path"]:
         configure(repo, args)
 
 
@@ -42,14 +50,9 @@ def configure(repo, args):
     if not os.path.isdir(os.path.join(repo, ".git")):
         error(f"path {repo} is no git repository")
 
-    if args.setup_local_mysql:
-        setup_local_mysql_database(repo)
-
-    if args.sort_yarn_scripts:
-        sort_yarn_scripts(repo)
-
-    if args.setup_github_actions:
-        mirror_file(repo, os.path.join(".github", "actions"))
+    for rule in get_rules():
+        if args[rule["flag"][2:].replace("-", "_")]:
+            rule["action"](repo)
 
 
 def sort_yarn_scripts(repo):
