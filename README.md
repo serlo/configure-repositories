@@ -32,3 +32,12 @@ repository. Run the following command to see the list of all possible rules:
 ```bash
 ./configure-repositories.py --setup-local-mysql ../db-migrations
 ```
+
+## Development
+
+* Install the Python version in [.tool-versions](.tool-versions)
+  * You may use [asdf](https://asdf-vm.com/) for the installation.
+* Install [pipenv](https://pipenv.pypa.io/en/latest/installation/#installing-pipenv)
+* Run `pipenv install --dev` to install the dev dependencies.
+* Run `pipenv shell` to activate the project's [virtual environment](https://docs.python.org/3/library/venv.html).
+* Run `pipenv run lint` to run the linting

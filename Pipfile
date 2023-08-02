@@ -1,0 +1,17 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+
+[dev-packages]
+pylint = "==2.14.5"
+pycodestyle = "==2.8.0"
+
+[scripts]
+lint = "pylint configure-repositories"
+codestyle = "pycodestyle . --show-source --show-pep8 --max-line-length=120"
+
+[requires]
+python_version = "3.11"
