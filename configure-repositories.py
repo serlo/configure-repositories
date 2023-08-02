@@ -209,17 +209,17 @@ def delete_recursively(path):
         shutil.rmtree(path)
     except FileNotFoundError:
         pass
-    except Exception as e:
+    except Exception as e:  # pylint: disable=W0703
         error(f"Error occurred while deleting: {path}\n{e}")
 
 
-def read_file(file_path):
+def read_file(file_path):  # pylint: disable=R1710
     try:
         with open(file_path, "r") as file:
             return file.read()
     except FileNotFoundError:
         return None
-    except Exception as e:
+    except Exception as e:  # pylint: disable=W0703
         error(f"Error occurred while reading the file: {file_path}\n{e}")
 
 
@@ -227,7 +227,7 @@ def write_to_file(file_path, content):
     try:
         with open(file_path, "w") as file:
             file.write(content)
-    except Exception as e:
+    except Exception as e:  # pylint: disable=W0703
         error(f"Error occurred while writing to file: {file_path}\n{e}")
 
 
