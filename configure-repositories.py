@@ -188,9 +188,9 @@ def block_in_file(block, start_marker, end_marker, indent_prefix=""):
 
 def update_file(file_path, update_func, default_content=None):
     content = read_file(file_path)
-    content = default_content if content == None else content
+    content = default_content if content is None else content
 
-    if content == None:
+    if content is None:
         return
 
     new_content = update_func(content)
