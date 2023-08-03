@@ -1,64 +1,24 @@
-#!/usr/bin/env python
-
-import argparse
 import json
-import logging
 import os
 import shutil
-import sys
 import textwrap
+from importlib.metadata import version
+import click
 
 
-def get_rules():
-    return [
-        {
-            "flag": "--setup-local-mysql",
-            "help": "set up a local MySQL database",
-            "action": setup_local_mysql_database,
-        },
-        {
-            "flag": "--sort-yarn-scripts",
-            "help": "Sort yarn scripts alphabetically",
-            "action": sort_yarn_scripts,
-        },
-    ]
+@click.group()
+@click.version_option(version('configure_repositories'))
+def cli():
+    """Configures repositories of the Serlo organisation"""
 
 
-def main():
-    logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
-
-    parser = argparse.ArgumentParser(
-        os.path.basename(__file__),
-        description="Configures repositories of the Serlo organisation",
-    )
-
-    for rule in get_rules():
-        parser.add_argument(rule["flag"], action="store_true", help=rule["help"])
-
-    parser.add_argument("repo_path", nargs="+")
-
-    args = vars(parser.parse_args())
-
-    for repo in args["repo_path"]:
-        configure(repo, args)
-
-
-def configure(repo, args):
-    if not os.path.isdir(os.path.join(repo, ".git")):
-        error(f"path {repo} is no git repository")
-
-    for rule in get_rules():
-        if args[rule["flag"][2:].replace("-", "_")]:
-            rule["action"](repo)
-
-
-def add_setup_node_action(repo):
-    mirror_file(repo, os.path.join(".github", "actions", "setup-node"))
-
-    remove_legacy_files(repo, [os.path.join(".github", "actions", "setup")])
-
-
+@cli.command('sort-yarn-scripts')
+@click.argument('repo')
 def sort_yarn_scripts(repo):
+    """Sort yarn scripts alphabetically in the REPO"""
+
+    validate_repo(repo)
+
     def format_package_json(package_json):
         if "scripts" not in package_json:
             return package_json
@@ -70,7 +30,13 @@ def sort_yarn_scripts(repo):
     update_package_json(repo, format_package_json)
 
 
+@cli.command('setup-local-mysql')
+@click.argument('repo')
 def setup_local_mysql_database(repo):
+    """Set up a local MySQL database in the REPO"""
+
+    validate_repo(repo)
+
     mirror_file(repo, os.path.join("scripts", "mysql"))
 
     update_file(
@@ -133,6 +99,11 @@ def setup_local_mysql_database(repo):
             os.path.join("scripts", "mysql", "transform"),
         ],
     )
+
+
+def validate_repo(repo):
+    if not os.path.isdir(os.path.join(repo, ".git")):
+        raise click.ClickException(f"path {repo} is no git repository")
 
 
 def update_package_json(repo, update_func):
@@ -209,32 +180,27 @@ def delete_recursively(path):
         shutil.rmtree(path)
     except FileNotFoundError:
         pass
-    except Exception as e:  # pylint: disable=W0703
-        error(f"Error occurred while deleting: {path}\n{e}")
+    except Exception as e:
+        raise click.ClickException(f"Error occurred while deleting: {path}\n{e}")
 
 
-def read_file(file_path):  # pylint: disable=R1710
+def read_file(file_path):
     try:
         with open(file_path, "r") as file:
             return file.read()
     except FileNotFoundError:
         return None
-    except Exception as e:  # pylint: disable=W0703
-        error(f"Error occurred while reading the file: {file_path}\n{e}")
+    except Exception as e:
+        raise click.ClickException(f"Error occurred while reading the file: {file_path}\n{e}")
 
 
 def write_to_file(file_path, content):
     try:
         with open(file_path, "w") as file:
             file.write(content)
-    except Exception as e:  # pylint: disable=W0703
-        error(f"Error occurred while writing to file: {file_path}\n{e}")
-
-
-def error(message):
-    logging.error(message)
-    sys.exit(1)
+    except Exception as e:
+        raise click.ClickException(f"Error occurred while writing to file: {file_path}\n{e}")
 
 
 if __name__ == "__main__":
-    main()
+    cli()
