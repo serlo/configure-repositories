@@ -4,6 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+click = "==8.1.6"
 
 [dev-packages]
 pylint = "==2.14.5"
