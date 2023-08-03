@@ -182,7 +182,7 @@ def delete_recursively(path):
         raise click.ClickException(f"Error occurred while deleting: {path}\n{e}")
 
 
-def read_file(file_path):  # pylint: disable=R1710
+def read_file(file_path):
     try:
         with open(file_path, "r") as file:
             return file.read()
