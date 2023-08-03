@@ -1,36 +1,40 @@
 # Configure repositories of the Serlo GitHub organization
 
-This repo contains the utility script
-[`./configure-repositories.py`](./configure-repositories.py) which configures a
+This repo contains the utility CLI `configure-repositories` that configures a
 repository based on predefined rules. It is used mainly for repositories of the
 [Serlo GitHub organization](https://github.com/serlo).
 
 ## Usage
 
-Run the script `./configure-repositories.py` with one or more paths to
+Run the script `python configure-repositories.py` with one or more paths to
 repositories:
 
 ```bash
-./configure-repositories.py [option ...] repo_path [repo_path ...]
+python configure_repositories.py [OPTIONS] COMMAND REPO
 ```
 
-Via `option` you can define the changes which shall be applied to the
-repository. Run the following command to see the list of all possible rules:
+Via `COMMAND` you can define the changes which shall be applied to the
+repository. Run any of the following commands to see the list of all possible commands:
 
 ```bash
-./configure-repositories.py --help
+python configure_repositories.py --help
+```
+
+
+```bash
+python configure_repositories.py
 ```
 
 ### Example: Sort the yarn scripts alphabetically
 
 ```bash
-./configure-repositories.py --sort-yarn-scripts ../api.serlo.org
+python configure_repositories.py sort-yarn-scripts ../api.serlo.org
 ```
 
 ### Example: Configure a local MySQL database
 
 ```bash
-./configure-repositories.py --setup-local-mysql ../db-migrations
+python configure_repositories.py setup-local-mysql ../db-migrations
 ```
 
 ## Development
