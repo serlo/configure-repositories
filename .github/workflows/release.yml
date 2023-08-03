@@ -1,0 +1,57 @@
+name: Release
+
+on:
+  pull_request:
+    branches: [ main ]
+
+#on:
+#  push:
+#    tags:
+#      - '*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+      - name: Install pipenv
+        run: |
+          python -m pip install --upgrade pip
+          pip install pipenv
+      - name: Install dev requirements
+        run: pipenv install --dev
+      - name: Build
+        run: python setup.py sdist
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v0.0.1
+          release_name: Release v0.0.1
+          draft: false
+          prerelease: false
+      - name: Release version
+        id: release_version
+        run: |
+          TAG=v0.0.1
+          echo "VERSION=${TAG#v}" >> $GITHUB_OUTPUT
+      - name: Publish release assets
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: dist/configure-repositories-${{ steps.release_version.outputs.version }}.tar.gz
+          asset_name: configure-repositories.tar.gz
+          asset_content_type: application/gzip
