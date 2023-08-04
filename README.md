@@ -54,10 +54,15 @@ repository. Run any of the following commands to see the list of all possible co
 
 * Install the Python version in [.tool-versions](.tool-versions)
   * You may use [asdf](https://asdf-vm.com/) for the installation.
+
+### Using pipenv
 * Install [pipenv](https://pipenv.pypa.io/en/latest/installation/#installing-pipenv)
 * Run `pipenv install --dev` to install the dev dependencies.
 * Run `pipenv shell` to activate the project's [virtual environment](https://docs.python.org/3/library/venv.html).
 * Run `pipenv run lint` to run the linting
+
+### Testing 
+
 * You can test the commands running `python configure_repositories.py [OPTIONS] COMMAND REPO`
 
 ## Releases
