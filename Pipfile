@@ -15,6 +15,8 @@ pyinstaller = "==5.13.0"
 lint = "pylint configure_repositories"
 codestyle = "pycodestyle . --show-source --show-pep8 --max-line-length=120"
 build_linux_x86 = "pyinstaller --target-architecture x86_64 --onefile --clean --name configure_repositories_linux_x86 configure_repositories.py"
+build_darwin_x86 = "pyinstaller --target-architecture x86_64 --onefile --clean --name configure_repositories_darwin_x86 configure_repositories.py"
+build_darwin_arm64 = "pyinstaller --target-architecture arm64 --onefile --clean --name configure_repositories_darwin_arm64 configure_repositories.py"
 
 [requires]
 python_version = "3.11"
