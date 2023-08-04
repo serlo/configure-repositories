@@ -2,12 +2,10 @@ import json
 import os
 import shutil
 import textwrap
-from importlib.metadata import version
 import click
 
 
 @click.group()
-@click.version_option(version('configure_repositories'))
 def cli():
     """Configures repositories of the Serlo organisation"""
 
