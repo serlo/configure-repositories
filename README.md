@@ -58,6 +58,7 @@ repository. Run any of the following commands to see the list of all possible co
 * Run `pipenv install --dev` to install the dev dependencies.
 * Run `pipenv shell` to activate the project's [virtual environment](https://docs.python.org/3/library/venv.html).
 * Run `pipenv run lint` to run the linting
+* You can test the commands running `python configure_repositories.py [OPTIONS] COMMAND REPO`
 
 ## Releases
 
