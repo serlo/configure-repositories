@@ -9,10 +9,12 @@ click = "==8.1.6"
 [dev-packages]
 pylint = "==2.14.5"
 pycodestyle = "==2.8.0"
+pyinstaller = "==5.13.0"
 
 [scripts]
 lint = "pylint configure_repositories"
 codestyle = "pycodestyle . --show-source --show-pep8 --max-line-length=120"
+build_linux_x86 = "pyinstaller --target-architecture x86_64 --onefile --clean --name configure_repositories_linux_x86 configure_repositories.py"
 
 [requires]
 python_version = "3.11"
