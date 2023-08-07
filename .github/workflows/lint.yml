@@ -28,5 +28,5 @@ jobs:
       - name: Lint
         run: pipenv run lint
 
-      - name: Codestyle
-        run: pipenv run codestyle
+      - name: Format
+        run: pipenv run format_check
