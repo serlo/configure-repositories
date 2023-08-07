@@ -184,7 +184,7 @@ def delete_recursively(path):
 
 def read_file(file_path):
     try:
-        with open(file_path, "r") as file:
+        with open(file_path, "r", encoding="utf-8") as file:
             return file.read()
     except FileNotFoundError:
         return None
@@ -194,7 +194,7 @@ def read_file(file_path):
 
 def write_to_file(file_path, content):
     try:
-        with open(file_path, "w") as file:
+        with open(file_path, "w", encoding="utf-8") as file:
             file.write(content)
     except Exception as e:
         raise click.ClickException(f"Error occurred while writing to file: {file_path}\n{e}")
