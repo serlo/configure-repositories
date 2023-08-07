@@ -8,15 +8,18 @@ repository based on predefined rules. It is used mainly for repositories of the
 
 ### Linux and Darwin (x86) 
 
-Download the executable from the [Releases](https://github.com/serlo/configure-repositories/releases) and make it
-executable: `chmod +x FILENAME`
+Download corresponding artifact file from the [Releases](https://github.com/serlo/configure-repositories/releases) 
+and make it executable: `chmod +x FILENAME`
 
-### Windows and Darwin (arm64)
+### Windows
+
+Download the executable (`.exe`) file from the [Releases](https://github.com/serlo/configure-repositories/releases).
+
+### Darwin (arm64)
 
 * Follow the steps in [Development](#development)
 * Build the executable depending on the Platform:
   * Darwin arm64: `pipenv run build_darwin_arm64`
-  * Windows: `pipenv run build_windows_x86`
 
 ## Usage
 
@@ -72,3 +75,4 @@ repository. Run any of the following commands to see the list of all possible co
 * The push of a new tag will trigger the creation of the releases for:
   * [Linux (x86)](.github/workflows/release-linux.yml)
   * [macOS (x86)](.github/workflows/release-macos.yml)
+  * [Windows (x86)](.github/workflows/release-windows.yml)
