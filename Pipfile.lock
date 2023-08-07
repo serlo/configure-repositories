@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "f4d1efb0ec2f0695b353bb4f4a0c46d702fee1a32909bbb38840c1055aac6754"
+            "sha256": "d9d98d9c9baa5c887ce14a67792e4d01f23b0d7db93c0bb1d078619a2188f619"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -10,7 +10,7 @@
         "sources": [
             {
                 "name": "pypi",
-                "url": "https://pypi.org/simple",
+                "url": "https://pypi.org/simple/",
                 "verify_ssl": true
             }
         ]
@@ -54,7 +54,7 @@
                 "sha256:8bef7dde241278824a6d83f44a544709b065191b95b6e50894bdc722fcba0504",
                 "sha256:f84c2818376e66cf843d497486ea8fed8700b340f308f076c6fb1229dff318b6"
             ],
-            "markers": "python_version >= '3.8'",
+            "markers": "python_full_version >= '3.8.0'",
             "version": "==5.12.0"
         },
         "lazy-object-proxy": {
@@ -98,6 +98,14 @@
             ],
             "markers": "python_version >= '3.7'",
             "version": "==1.9.0"
+        },
+        "macholib": {
+            "hashes": [
+                "sha256:44c40f2cd7d6726af8fa6fe22549178d3a4dfecc35a9cd15ea916d9c83a688e0",
+                "sha256:557bbfa1bb255c20e9abafe7ed6cd8046b48d9525db2f9b77d3122a63a2a8bf8"
+            ],
+            "markers": "sys_platform == 'darwin'",
+            "version": "==1.16.2"
         },
         "mccabe": {
             "hashes": [
