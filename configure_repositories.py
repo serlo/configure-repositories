@@ -10,8 +10,8 @@ def cli():
     """Configures repositories of the Serlo organisation"""
 
 
-@cli.command('sort-yarn-scripts')
-@click.argument('repo')
+@cli.command("sort-yarn-scripts")
+@click.argument("repo")
 def sort_yarn_scripts(repo):
     """Sort yarn scripts alphabetically in the REPO"""
 
@@ -28,8 +28,8 @@ def sort_yarn_scripts(repo):
     update_package_json(repo, format_package_json)
 
 
-@cli.command('setup-local-mysql')
-@click.argument('repo')
+@cli.command("setup-local-mysql")
+@click.argument("repo")
 def setup_local_mysql_database(repo):
     """Set up a local MySQL database in the REPO"""
 
@@ -65,13 +65,15 @@ def setup_local_mysql_database(repo):
     def update(package_json):
         package_json.setdefault("scripts", {})
 
+        mysql_entrypoint_cmd = (
+            'mysql sh -c "pv /docker-entrypoint-initdb.d/001-init.sql | serlo-mysql"'
+        )
         ts_node_cmd = "ts-node --experimental-specifier-resolution=node"
         package_json["scripts"].update(
             {
                 "mysql": "docker compose exec mysql serlo-mysql",
                 "mysql:import-anonymous-data": f"{ts_node_cmd} scripts/mysql/mysql-import-anonymous-data",
-                "mysql:rollback":
-                    "docker compose exec mysql sh -c \"pv /docker-entrypoint-initdb.d/001-init.sql | serlo-mysql\"",
+                "mysql:rollback": f"docker compose exec {mysql_entrypoint_cmd}",
                 "start:docker": "docker compose up --detach",
                 "stop:docker": "docker compose down",
             }
@@ -189,7 +191,9 @@ def read_file(file_path):
     except FileNotFoundError:
         return None
     except Exception as e:
-        raise click.ClickException(f"Error occurred while reading the file: {file_path}\n{e}")
+        raise click.ClickException(
+            f"Error occurred while reading the file: {file_path}\n{e}"
+        )
 
 
 def write_to_file(file_path, content):
@@ -197,7 +201,9 @@ def write_to_file(file_path, content):
         with open(file_path, "w", encoding="utf-8") as file:
             file.write(content)
     except Exception as e:
-        raise click.ClickException(f"Error occurred while writing to file: {file_path}\n{e}")
+        raise click.ClickException(
+            f"Error occurred while writing to file: {file_path}\n{e}"
+        )
 
 
 if __name__ == "__main__":

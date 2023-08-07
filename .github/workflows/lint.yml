@@ -5,6 +5,7 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  merge_group:
 
 jobs:
   lint:
@@ -28,5 +29,5 @@ jobs:
       - name: Lint
         run: pipenv run lint
 
-      - name: Codestyle
-        run: pipenv run codestyle
+      - name: Format
+        run: pipenv run format_check
