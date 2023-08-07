@@ -29,8 +29,8 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: 0.0.1
-          name: Release 0.0.1
+          tag_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
           draft: false
           prerelease: false
           files: ./dist/configure_repositories_windows_x86.exe
