@@ -45,6 +45,7 @@ def setup_local_mysql_database(repo):
                     mysql:
                       image: eu.gcr.io/serlo-shared/serlo-mysql-database:latest
                       platform: linux/x86_64
+                      pull_policy: always
                       ports:
                         - '3306:3306'
                 """
