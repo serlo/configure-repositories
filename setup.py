@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name="configure-repositories",
-    version="0.1.0",
+    version="0.1.2",
     description="A command line interface to configure repositories of the Serlo organization",
     py_modules=["configure-repositories"],
     classifiers=[
