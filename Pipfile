@@ -12,7 +12,7 @@ black = "==23.9.1"
 pyinstaller = "==6.0.0"
 pywin32-ctypes = "==0.2.2"
 pefile = "==2023.2.7"
-macholib = "==1.16.2"
+macholib = "==1.16.3"
 
 [scripts]
 lint = "pylint configure_repositories"
