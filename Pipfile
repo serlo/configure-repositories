@@ -7,7 +7,7 @@ name = "pypi"
 click = "==8.1.7"
 
 [dev-packages]
-pylint = "==2.17.6"
+pylint = "==3.0.0"
 black = "==23.9.1"
 pyinstaller = "==6.0.0"
 pywin32-ctypes = "==0.2.2"
