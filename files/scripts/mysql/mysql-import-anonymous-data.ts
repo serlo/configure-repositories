@@ -59,7 +59,7 @@ function downloadDump(dumpPath: string, fileName: string) {
 }
 
 function getMySQLContainer(): string | null {
-  const container = spawnSync('docker-compose', ['ps', '-q', 'mysql'], {
+  const container = spawnSync('docker', ['compose', 'ps', '-q', 'mysql'], {
     stdio: 'pipe',
     encoding: 'utf-8',
   })
@@ -93,9 +93,9 @@ function execSql(command: string) {
 }
 
 function execCommand(command: string) {
-  const args = ['exec', 'mysql', 'sh', '-c', `${command}`]
+  const args = ['compose', 'exec', 'mysql', 'sh', '-c', `${command}`]
 
-  runCmd('docker-compose', args)
+  runCmd('docker', args)
 }
 
 function runCmd(cmd: string, args: string[]) {
