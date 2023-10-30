@@ -1,5 +1,5 @@
 import { spawnSync } from 'child_process'
-import { existsSync, statSync } from 'fs'
+import { existsSync } from 'fs'
 
 const TMP_DIR = '/tmp'
 
