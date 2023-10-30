@@ -16,7 +16,7 @@ function main() {
   const container = getMySQLContainer()
   if (!container) {
     info(
-      'MySQL container not found. Please start the database first with "yarn start"!',
+      'MySQL container not found. Please start the database first with "yarn start"!'
     )
     return
   }
@@ -35,7 +35,7 @@ function getLatestDump(): string {
     {
       stdio: 'pipe',
       encoding: 'utf-8',
-    },
+    }
   )
     .stdout.toString()
     .trim()
@@ -84,7 +84,7 @@ function populateDumpInMySql() {
   execCommand(`pv ${TMP_DIR}/mysql.sql | serlo-mysql`)
   info('Start importing anonymized user data')
   execSql(
-    "LOAD DATA LOCAL INFILE '/tmp/user.csv' INTO TABLE user FIELDS TERMINATED BY '\t' LINES TERMINATED BY '\n' IGNORE 1 ROWS;",
+    "LOAD DATA LOCAL INFILE '/tmp/user.csv' INTO TABLE user FIELDS TERMINATED BY '\t' LINES TERMINATED BY '\n' IGNORE 1 ROWS;"
   )
 }
 
