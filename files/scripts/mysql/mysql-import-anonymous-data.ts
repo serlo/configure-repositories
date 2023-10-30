@@ -1,5 +1,5 @@
 import { spawnSync } from 'child_process'
-import { existsSync, statSync } from 'fs'
+import { existsSync } from 'fs'
 
 const TMP_DIR = '/tmp'
 
@@ -16,7 +16,7 @@ function main() {
   const container = getMySQLContainer()
   if (!container) {
     info(
-      'MySQL container not found. Please start the database first with "yarn start"!',
+      'MySQL container not found. Please start the database first with "yarn start"!'
     )
     return
   }
@@ -35,7 +35,7 @@ function getLatestDump(): string {
     {
       stdio: 'pipe',
       encoding: 'utf-8',
-    },
+    }
   )
     .stdout.toString()
     .trim()
@@ -59,7 +59,7 @@ function downloadDump(dumpPath: string, fileName: string) {
 }
 
 function getMySQLContainer(): string | null {
-  const container = spawnSync('docker-compose', ['ps', '-q', 'mysql'], {
+  const container = spawnSync('docker', ['compose', 'ps', '-q', 'mysql'], {
     stdio: 'pipe',
     encoding: 'utf-8',
   })
@@ -84,7 +84,7 @@ function populateDumpInMySql() {
   execCommand(`pv ${TMP_DIR}/mysql.sql | serlo-mysql`)
   info('Start importing anonymized user data')
   execSql(
-    "LOAD DATA LOCAL INFILE '/tmp/user.csv' INTO TABLE user FIELDS TERMINATED BY '\t' LINES TERMINATED BY '\n' IGNORE 1 ROWS;",
+    "LOAD DATA LOCAL INFILE '/tmp/user.csv' INTO TABLE user FIELDS TERMINATED BY '\t' LINES TERMINATED BY '\n' IGNORE 1 ROWS;"
   )
 }
 
@@ -93,9 +93,9 @@ function execSql(command: string) {
 }
 
 function execCommand(command: string) {
-  const args = ['exec', 'mysql', 'sh', '-c', `${command}`]
+  const args = ['compose', 'exec', 'mysql', 'sh', '-c', `${command}`]
 
-  runCmd('docker-compose', args)
+  runCmd('docker', args)
 }
 
 function runCmd(cmd: string, args: string[]) {
