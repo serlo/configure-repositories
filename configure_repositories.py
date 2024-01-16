@@ -69,11 +69,10 @@ def setup_local_mysql_database(repo):
         mysql_entrypoint_cmd = (
             'mysql sh -c "pv /docker-entrypoint-initdb.d/001-init.sql | serlo-mysql"'
         )
-        ts_node_cmd = "ts-node --experimental-specifier-resolution=node"
         package_json["scripts"].update(
             {
                 "mysql": "docker compose exec mysql serlo-mysql",
-                "mysql:import-anonymous-data": f"{ts_node_cmd} scripts/mysql/mysql-import-anonymous-data",
+                "mysql:import-anonymous-data": "./scripts/mysql/import-anonymous-data.sh",
                 "mysql:rollback": f"docker compose exec {mysql_entrypoint_cmd}",
                 "start:docker": "docker compose up --detach",
                 "stop:docker": "docker compose down",
