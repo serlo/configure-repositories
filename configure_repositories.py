@@ -69,7 +69,6 @@ def setup_local_mysql_database(repo):
         mysql_entrypoint_cmd = (
             'mysql sh -c "pv /docker-entrypoint-initdb.d/001-init.sql | serlo-mysql"'
         )
-        ts_node_cmd = "ts-node --experimental-specifier-resolution=node"
         package_json["scripts"].update(
             {
                 "mysql": "docker compose exec mysql serlo-mysql",
