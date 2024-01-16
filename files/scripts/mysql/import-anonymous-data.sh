@@ -14,7 +14,6 @@ file_name=$(basename "$latest_dump")
 gsutil cp "$latest_dump" "$tmp_dir/$file_name"
 
 container=$(docker compose ps -q mysql | tr -d '\n')
-echo ${container}
 
 if [ -z "$container" ]; then
   echo "❌ MySQL container not found. Please start the database first with 'yarn start'!"
