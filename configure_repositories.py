@@ -72,7 +72,7 @@ def setup_local_mysql_database(repo):
         package_json["scripts"].update(
             {
                 "mysql": "docker compose exec mysql serlo-mysql",
-                "mysql:import-anonymous-data": f"./scripts/mysql/mysql-import-anonymous-data.sh",
+                "mysql:import-anonymous-data": "./scripts/mysql/import-anonymous-data.sh",
                 "mysql:rollback": f"docker compose exec {mysql_entrypoint_cmd}",
                 "start:docker": "docker compose up --detach",
                 "stop:docker": "docker compose down",
