@@ -8,7 +8,7 @@ click = "==8.1.7"
 
 [dev-packages]
 pylint = "==3.0.3"
-black = "==24.1.1"
+black = "==24.2.0"
 pyinstaller = "==6.4.0"
 pywin32-ctypes = "==0.2.2"
 pefile = "==2023.2.7"
