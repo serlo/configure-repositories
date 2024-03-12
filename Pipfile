@@ -9,7 +9,7 @@ click = "==8.1.7"
 [dev-packages]
 pylint = "==3.1.0"
 black = "==24.2.0"
-pyinstaller = "==6.4.0"
+pyinstaller = "==6.5.0"
 pywin32-ctypes = "==0.2.2"
 pefile = "==2023.2.7"
 macholib = "==1.16.3"
